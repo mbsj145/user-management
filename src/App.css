@@ -1,0 +1,40 @@
+/* Basic container styling */
+.container {
+  width: 80%;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+}
+
+/* Styling the button to connect wallet */
+.connect-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.connect-btn:hover {
+  background-color: #45a049;
+}
+
+/* Styling for the form elements */
+.form input {
+  padding: 10px;
+  margin: 5px 0;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.form button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: 
+}
