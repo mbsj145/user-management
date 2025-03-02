@@ -3,7 +3,7 @@ import { BrowserProvider, Contract } from "ethers";
 import UserManagementABI from "./UserManagementABI.json";
 import "./App.css"; // Ensure you have a CSS file for styling
 
-const contractAddress = "0x76ECaC66cde705b028962eB330C57f9CCDC80DB6";
+const contractAddress = "0x25596d0226a68AaD57b89A3b4056Be6ffAd550b2";
 
 const UserManagement = () => {
     const [provider, setProvider] = useState(null);
@@ -27,51 +27,50 @@ const UserManagement = () => {
     }, [contract]);
 
     const connectWallet = async () => {
-      if (window.ethereum) {
-          const provider = new BrowserProvider(window.ethereum);
-          const signer = await provider.getSigner();
-  
-          try {
-              // Request wallet connection
-              await window.ethereum.request({ method: "eth_requestAccounts" });
-  
-              // Get current network
-              const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
-  
-              // Polygon zkEVM Cardona Testnet Chain ID
-              const cardonaChainId = "0x98a"; // 378 in decimal
-  
-              if (currentChainId !== cardonaChainId) {
-                  // Add Polygon zkEVM Cardona Testnet if not present
-                  await window.ethereum.request({
-                      method: "wallet_addEthereumChain",
-                      params: [{
-                          chainId: cardonaChainId,
-                          chainName: "Polygon zkEVM Cardona Testnet",
-                          nativeCurrency: {
-                              name: "ETH",
-                              symbol: "ETH",
-                              decimals: 18,
-                          },
-                          rpcUrls: ["https://rpc.cardona.zkevm-rpc.com"],
-                          blockExplorerUrls: ["https://cardona-zkevm.polygonscan.com"],
-                      }],
-                  });
-              }
-  
-              const contract = new Contract(contractAddress, UserManagementABI, signer);
-              setProvider(provider);
-              setSigner(signer);
-              setContract(contract);
-              fetchUsers();
-              setAccount(await signer.getAddress());
-  
-          } catch (error) {
-              console.error("Error connecting wallet:", error);
-          }
-      } else {
-          alert("MetaMask is not installed. Please install it to use this feature.");
-      }
+    try {
+            if (window.ethereum) {
+                const provider = new BrowserProvider(window.ethereum);
+                const signer = await provider.getSigner();
+                    // Request wallet connection
+                await window.ethereum.request({ method: "eth_requestAccounts" });
+        
+                    // Get current network
+                const currentChainId = await window.ethereum.request({ method: "eth_chainId" });
+        
+                    // Polygon zkEVM Cardona Testnet Chain ID
+                const cardonaChainId = "0x98a"; // 378 in decimal
+        
+                if (currentChainId !== cardonaChainId) {
+                        // Add Polygon zkEVM Cardona Testnet if not present
+                        await window.ethereum.request({
+                            method: "wallet_addEthereumChain",
+                            params: [{
+                                chainId: cardonaChainId,
+                                chainName: "Polygon zkEVM Cardona Testnet",
+                                nativeCurrency: {
+                                    name: "ETH",
+                                    symbol: "ETH",
+                                    decimals: 18,
+                                },
+                                rpcUrls: ["https://rpc.cardona.zkevm-rpc.com"],
+                                blockExplorerUrls: ["https://cardona-zkevm.polygonscan.com"],
+                            }],
+                        });
+                }
+        
+                const contract = new Contract(contractAddress, UserManagementABI, signer);
+                setProvider(provider);
+                setSigner(signer);
+                setContract(contract);
+                fetchUsers();
+                setAccount(await signer.getAddress());
+        
+            } else {
+                alert("MetaMask is not installed. Please install it to use this feature.");
+            }
+        }catch (error) {
+            console.error("Error connecting wallet:", error);
+        }
     };  
 
     const fetchUsers = async () => {
@@ -98,7 +97,7 @@ const UserManagement = () => {
             }
             const tx = await contract.addUser(form.address, form.name, form.email, parseInt(form.age), form.phone, form.homeAddress, {
               gasLimit: 500000,  // Adjust based on the network
-          });
+            });
             await tx.wait();
             setForm({
               address: "",
@@ -148,23 +147,31 @@ const UserManagement = () => {
 
     return (
         <div className="container">
-            <button onClick={connectWallet} className="connect-btn">Connect Wallet</button>
-            {account && <p>Connected: {account}</p>}
-            
-            <h2>User Management</h2>
-            <div className="form">
-                <input type="text" name="address" placeholder="Wallet Address" onChange={handleChange} defaultValue={form.address}/>
-                <input type="text" name="name" placeholder="Name" onChange={handleChange} defaultValue={form.name} />
-                <input type="email" name="email" placeholder="Email" onChange={handleChange} defaultValue={form.email} />
-                <input type="number" name="age" placeholder="Age" onChange={handleChange} defaultValue={form.age} />
-                <input type="text" name="phone" placeholder="Phone" onChange={handleChange} defaultValue={form.phone} />
-                <input type="text" name="homeAddress" placeholder="Home Address" onChange={handleChange} defaultValue={form.homeAddress} />
+        <div className="header">
+            <img src="/logo.jpeg" alt="User Management Logo" className="logo" />
+            <button onClick={connectWallet} className="btn connect-btn">{account ? "Wallet Connected" : "Connect Wallet"}</button>
+        </div>
+        
+        {account && <p className="connected-account title">Connected: {account}</p>}
+        
+        <h2 className="title">User Management System</h2>
+        
+        <div className="form-container">
+            <div className="input-grid">
+                <input type="text" name="address" placeholder="Wallet Address" onChange={handleChange} value={form.address}/>
+                <input type="text" name="name" placeholder="Name" onChange={handleChange} value={form.name} />
+                <input type="email" name="email" placeholder="Email" onChange={handleChange} value={form.email} />
+                <input type="number" name="age" placeholder="Age" onChange={handleChange} value={form.age} />
+                <input type="text" name="phone" placeholder="Phone" onChange={handleChange} value={form.phone} />
+                <input type="text" name="homeAddress" placeholder="Home Address" onChange={handleChange} value={form.homeAddress} />
             </div>
-            <div className="form">
-              <button onClick={addUser} className="add-btn">Add User</button>
-              <button onClick={updateUser} className="update-btn">Update User</button>
+            <div className="button-group">
+                <button onClick={addUser} className="btn add-btn">Add User</button>
+                <button onClick={updateUser} className="btn update-btn">Update User</button>
             </div>
-            <table className="form">
+        </div>
+        <div className="table-container">
+        <table className="user-table">
                 <thead>
                     <tr>
                         <th>Address</th>
@@ -200,8 +207,9 @@ const UserManagement = () => {
                         </tr>
                     ))}
                 </tbody>
-            </table>
+                </table>
         </div>
+    </div>
     );
 };
 
