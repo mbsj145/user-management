@@ -13,8 +13,8 @@ contract UserManagement {
     }
 
     address public admin;
-    mapping(address => User) private users;
-    address[] private userAddresses;
+    mapping(address => User) public users;
+    address[] public userAddresses;
 
     event UserAdded(address indexed user, string name, string email, uint256 age,string phone,string homeAddress);
     event UserUpdated(address indexed user, string name, string email, uint256 age,string phone,string homeAddress);
@@ -58,27 +58,40 @@ contract UserManagement {
     // Delete user details
     function deleteUser(address _user) public onlyAdmin {
         require(users[_user].exists, "User does not exist");
+
+        // Find the index of the user in the array
+        uint256 indexToDelete;
+        bool found = false;
+
+        for (uint256 i = 0; i < userAddresses.length; i++) {
+            if (userAddresses[i] == _user) {
+                indexToDelete = i;
+                found = true;
+                break;
+            }
+        }
+
+        require(found, "User address not found in array");
+
+        // Swap the last element with the one to delete and then pop
+        userAddresses[indexToDelete] = userAddresses[userAddresses.length - 1];
+        userAddresses.pop();
+
+        // Delete user from mapping
         delete users[_user];
+
         emit UserDeleted(_user);
     }
 
     // Get all users with details
     function getAllUsers() public view returns (User[] memory) {
-        uint256 count = 0;
-
-        // Count only existing users
-        for (uint i = 0; i < userAddresses.length; i++) {
-            if (users[userAddresses[i]].exists) {
-                count++;
-            }
-        }
-
+        
         // Create a properly sized array
-        User[] memory allUsers = new User[](count);
+        User[] memory allUsers = new User[](userAddresses.length);
         uint256 index = 0;
 
         for (uint i = 0; i < userAddresses.length; i++) {
-            if (users[userAddresses[i]].exists) {
+            if (users[userAddresses[i]].userAddress != address(0)) {
                 allUsers[index] = users[userAddresses[i]];
                 index++;
             }
