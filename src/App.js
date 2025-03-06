@@ -189,7 +189,7 @@ const UserManagement = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user, index) => (
+                    {users && users.length > 0 && users.map((user, index) => (
                         <tr key={index}>
                             <td>{user?.userAddress.slice(0,5)+"..."+user?.userAddress.slice(35,user?.userAddress.length)}</td>
                             <td>{user.name}</td>
