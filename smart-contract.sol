@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract UserManagement {
+contract UserManidment {
     struct User {
         string name;
         string email;
-        uint256 age;
+        string id;
         string phone;
         string homeAddress;
+        string department;
         address userAddress;
         bool exists;
     }
@@ -16,8 +17,8 @@ contract UserManagement {
     mapping(address => User) public users;
     address[] public userAddresses;
 
-    event UserAdded(address indexed user, string name, string email, uint256 age,string phone,string homeAddress);
-    event UserUpdated(address indexed user, string name, string email, uint256 age,string phone,string homeAddress);
+    event UserAdded(address indexed user, string name, string email,  string id,string phone,string homeAddress, string department);
+    event UserUpdated(address indexed user, string name, string email,  string id,string phone,string homeAddress,string department);
     event UserDeleted(address indexed user);
 
     modifier onlyAdmin() {
@@ -35,24 +36,24 @@ contract UserManagement {
     }
 
     // Add user details
-    function addUser(address _user, string memory _name, string memory _email, uint256 _age,string memory _phone,string memory _homeAddress) public onlyAdmin {
+    function addUser(address _user, string memory _name, string memory _email,  string memory _id,string memory _phone,string memory _homeAddress, string memory _department) public onlyAdmin {
         require(!users[_user].exists, "User already exists");
-        users[_user] = User(_name, _email, _age, _phone, _homeAddress,_user, true);
+        users[_user] = User(_name, _email, _id, _phone, _homeAddress,_department,_user, true);
         userAddresses.push(_user);
-        emit UserAdded(_user, _name, _email, _age, _phone, _homeAddress);
+        emit UserAdded(_user, _name, _email, _id, _phone, _homeAddress,_department);
     }
 
     // View user details
-    function getUser(address _user) public view returns (string memory, string memory, uint256) {
+    function getUser(address _user) public view returns (string memory, string memory,  string memory) {
         User memory user = users[_user];
-        return (user.name, user.email, user.age);
+        return (user.name, user.email, user.id);
     }
 
     // Update user details
-    function updateUser(address _user, string memory _name, string memory _email, uint256 _age, string memory _phone,string memory _homeAddress) public onlyAdmin {
+    function updateUser(address _user, string memory _name, string memory _email,  string memory _id, string memory _phone,string memory _homeAddress, string memory _department) public onlyAdmin {
         require(users[_user].exists, "User does not exist");
-        users[_user] = User(_name, _email, _age, _phone, _homeAddress,_user, true);
-        emit UserUpdated(_user, _name, _email, _age, _phone, _homeAddress);
+        users[_user] = User(_name, _email, _id, _phone, _homeAddress,_department,_user, true);
+        emit UserUpdated(_user, _name, _email, _id, _phone,_department, _homeAddress);
     }
 
     // Delete user details

@@ -3,7 +3,7 @@ import { BrowserProvider, Contract } from "ethers";
 import UserManagementABI from "./UserManagementABI.json";
 import "./App.css"; // Ensure you have a CSS file for styling
 
-const contractAddress = "0x25596d0226a68AaD57b89A3b4056Be6ffAd550b2";
+const contractAddress = "0xA602C5b8B8243b102B740378f452983afD3218Fd";
 
 const UserManagement = () => {
     const [provider, setProvider] = useState(null);
@@ -15,9 +15,10 @@ const UserManagement = () => {
         address: "",
         name: "",
         email: "",
-        age: "",
+        id: "",
         phone: "",
-        homeAddress: ""
+        department: "",
+        homeAddress: "",
     });
 
     useEffect(() => {
@@ -95,17 +96,18 @@ const UserManagement = () => {
               alert("User wallet already exist")
               return;
             }
-            const tx = await contract.addUser(form.address, form.name, form.email, parseInt(form.age), form.phone, form.homeAddress, {
+            const tx = await contract.addUser(form.address, form.name, form.email, form.id, form.phone, form.homeAddress, form.department, {
               gasLimit: 500000,  // Adjust based on the network
             });
             await tx.wait();
             setForm({
-              address: "",
-              name: "",
-              email: "",
-              age: "",
-              phone: "",
-              homeAddress: ""
+                address: "",
+                name: "",
+                email: "",
+                id: "",
+                phone: "",
+                department: "",
+                homeAddress: "",
             })
             fetchUsers();
         } catch (error) {
@@ -115,17 +117,18 @@ const UserManagement = () => {
 
     const updateUser = async () => {
         try {
-            const tx = await contract.updateUser(form.address, form.name, form.email, form.age, form.phone, form.homeAddress, {
+            const tx = await contract.updateUser(form.address, form.name, form.email, form.id, form.phone, form.homeAddress, form.department, {
               gasLimit: 500000,  // Adjust based on the network
           });
             await tx.wait();
             setForm({
-              address: "",
-              name: "",
-              email: "",
-              age: "",
-              phone: "",
-              homeAddress: ""
+                address: "",
+                name: "",
+                email: "",
+                id: "",
+                phone: "",
+                department: "",
+                homeAddress: "",
             })
             fetchUsers();
         } catch (error) {
@@ -159,11 +162,12 @@ const UserManagement = () => {
         <div className="form-container">
             <div className="input-grid">
                 <input type="text" name="address" placeholder="Wallet Address" onChange={handleChange} value={form.address}/>
-                <input type="text" name="name" placeholder="Name" onChange={handleChange} value={form.name} />
-                <input type="email" name="email" placeholder="Email" onChange={handleChange} value={form.email} />
-                <input type="number" name="age" placeholder="Age" onChange={handleChange} value={form.age} />
-                <input type="text" name="phone" placeholder="Phone" onChange={handleChange} value={form.phone} />
+                <input type="text" name="name" placeholder="Employee Name" onChange={handleChange} value={form.name} />
+                <input type="email" name="email" placeholder="Email Address" onChange={handleChange} value={form.email} />
+                <input type="text" name="id" placeholder="Employee Id" onChange={handleChange} value={form.id} />
+                <input type="text" name="phone" placeholder="Phone Number" onChange={handleChange} value={form.phone} />
                 <input type="text" name="homeAddress" placeholder="Home Address" onChange={handleChange} value={form.homeAddress} />
+                <input type="text" name="department" placeholder="Department" onChange={handleChange} value={form.department} />
             </div>
             <div className="button-group">
                 <button onClick={addUser} className="btn add-btn">Add User</button>
@@ -174,32 +178,35 @@ const UserManagement = () => {
         <table className="user-table">
                 <thead>
                     <tr>
-                        <th>Address</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Age</th>
-                        <th>Phone</th>
+                        <th>Wallet Address</th>
+                        <th>Employee Name</th>
+                        <th>Employee Id</th>
+                        <th>Email Address</th>
+                        <th>Phone Number</th>
                         <th>Home Address</th>
+                        <th>Department</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map((user, index) => (
                         <tr key={index}>
-                            <td>{user.userAddress}</td>
+                            <td>{user?.userAddress.slice(0,5)+"..."+user?.userAddress.slice(35,user?.userAddress.length)}</td>
                             <td>{user.name}</td>
+                            <td>{user.id}</td>
                             <td>{user.email}</td>
-                            <td>{user.age}</td>
                             <td>{user.phone}</td>
                             <td>{user.homeAddress}</td>
+                            <td>{user.department}</td>
                             <td>
                                 <button onClick={() =>  setForm({
                                     address: user.userAddress,
                                     name: user.name,
                                     email: user.email,
-                                    age: user.age,
+                                    id: user.id,
                                     phone: user.phone,
-                                    homeAddress: user.homeAddress
+                                    homeAddress: user.homeAddress,
+                                    department: user.department,
                                   })} 
                                   className="edit-btn">Edit</button>
                                 <button onClick={() => deleteUser(user.userAddress)} className="delete-btn">Delete</button>

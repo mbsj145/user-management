@@ -17,9 +17,9 @@
 				"type": "string"
 			},
 			{
-				"internalType": "uint256",
-				"name": "_age",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
 			},
 			{
 				"internalType": "string",
@@ -29,6 +29,11 @@
 			{
 				"internalType": "string",
 				"name": "_homeAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_department",
 				"type": "string"
 			}
 		],
@@ -86,9 +91,9 @@
 				"type": "string"
 			},
 			{
-				"internalType": "uint256",
-				"name": "_age",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "_id",
+				"type": "string"
 			},
 			{
 				"internalType": "string",
@@ -98,6 +103,11 @@
 			{
 				"internalType": "string",
 				"name": "_homeAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_department",
 				"type": "string"
 			}
 		],
@@ -129,9 +139,9 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
-				"name": "age",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -143,6 +153,12 @@
 				"indexed": false,
 				"internalType": "string",
 				"name": "homeAddress",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "department",
 				"type": "string"
 			}
 		],
@@ -185,9 +201,9 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "uint256",
-				"name": "age",
-				"type": "uint256"
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
 			},
 			{
 				"indexed": false,
@@ -199,6 +215,12 @@
 				"indexed": false,
 				"internalType": "string",
 				"name": "homeAddress",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "department",
 				"type": "string"
 			}
 		],
@@ -235,9 +257,9 @@
 						"type": "string"
 					},
 					{
-						"internalType": "uint256",
-						"name": "age",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "id",
+						"type": "string"
 					},
 					{
 						"internalType": "string",
@@ -247,6 +269,11 @@
 					{
 						"internalType": "string",
 						"name": "homeAddress",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "department",
 						"type": "string"
 					},
 					{
@@ -260,7 +287,7 @@
 						"type": "bool"
 					}
 				],
-				"internalType": "struct UserManagement.User[]",
+				"internalType": "struct UserManidment.User[]",
 				"name": "",
 				"type": "tuple[]"
 			}
@@ -289,9 +316,82 @@
 				"type": "string"
 			},
 			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
 				"internalType": "uint256",
 				"name": "",
 				"type": "uint256"
+			}
+		],
+		"name": "userAddresses",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "users",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "email",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "id",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "phone",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "homeAddress",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "department",
+				"type": "string"
+			},
+			{
+				"internalType": "address",
+				"name": "userAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "exists",
+				"type": "bool"
 			}
 		],
 		"stateMutability": "view",
